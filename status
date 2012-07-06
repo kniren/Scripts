@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "[Mail: $(/home/alex/Scripts/mailcheck)] [Bat: $(python /home/alex/Scripts/bat_remaining.py)] | $( date +"%a %d %b %R")"
