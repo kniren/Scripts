@@ -1,4 +1,0 @@
-while true; do
-    xsetroot -name "$(/home/alex/Scripts/status)"
-    sleep 1m   
-done

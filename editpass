@@ -1,0 +1,23 @@
+#!/bin/bash
+# ------------------------------------------------------------------
+#
+#     Scripts/editpass
+#     Description: Edit my encrypted password list
+#     Author: Alex Sánchez <kniren@gmail.com>
+#
+# ------------------------------------------------------------------
+
+PASSFILE=/keys/passwords
+
+if [[ -z $EDITOR ]]; then
+    EDITOR=vim
+fi
+
+if [[ -f $PASSFILE.cpt ]]; then
+    read -s -p "Password: " PASSWORD
+    echo ""
+    ccdecrypt --key "$PASSWORD" $PASSFILE.cpt
+    $EDITOR $PASSFILE
+    ccencrypt --key "$PASSWORD" $PASSFILE
+fi
+

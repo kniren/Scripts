@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#łpkill -9 offlineimap
+#pkill -9 offlineimap
 
 offlineimap -o -u quiet -q -f 'INBOX' >/dev/null ;
 offlineimap -o -u quiet &>/dev/null &

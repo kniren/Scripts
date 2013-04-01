@@ -1,0 +1,19 @@
+#!/bin/bash
+# ------------------------------------------------------------------
+#
+#     Scripts/findpass
+#     Description: Find a password in my encrypted password list
+#     Author: Alex Sánchez <kniren@gmail.com>
+#
+# ------------------------------------------------------------------
+
+PASSFILE=/keys/passwords
+if [[ $# -gt 0 ]]; then
+    PASSLIST=`ccat $PASSFILE.cpt`
+    for ARG in $@ 
+    do
+        echo "$PASSLIST"  | grep $ARG
+    done
+else
+    ccat $PASSFILE.cpt
+fi

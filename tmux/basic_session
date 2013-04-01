@@ -1,9 +1,0 @@
-#!/bin/sh
-tmux new-session -d -s base
- 
-tmux new-window -t base:1 -n 'zsh' '/bin/zsh'  
-tmux new-window -t base:2 -n 'chat' 'weechat-curses'
-tmux new-window -t base:3 -n 'rtorrent' 'rtorrent'
- 
-tmux select-window -t base:1
-tmux -2 attach-session -t base
