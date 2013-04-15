@@ -1,0 +1,7 @@
+#/bin/bash
+tmux new-session -d -s base
+tmux new-window -t base:2 -n 'mail' '/usr/bin/mutt'  
+tmux new-window -t base:3 -n 'music' '/usr/bin/ncmpcpp'  
+tmux new-window -t base:4 -n 'chat' '/usr/bin/weechat-curses'  
+tmux select-window -t base:1
+tmux -2 attach-session -t base

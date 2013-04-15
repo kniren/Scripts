@@ -1,6 +1,0 @@
-#/bin/bash
-tmux new-session -d -s base
-tmux new-window -t base:2 -n 'zsh' '/bin/zsh'  
-tmux new-window -t base:3 -n 'zsh' '/bin/zsh'  
-tmux select-window -t base:1
-tmux -2 attach-session -t base

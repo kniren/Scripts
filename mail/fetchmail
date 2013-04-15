@@ -1,8 +1,0 @@
-#!/bin/bash
-
-#pkill -9 offlineimap
-
-offlineimap -o -u quiet -q -f 'INBOX' >/dev/null ;
-offlineimap -o -u quiet &>/dev/null &
-
-exit 0
