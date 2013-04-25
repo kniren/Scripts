@@ -1,0 +1,4 @@
+#!/bin/bash
+if [[ -e "/dev/disk/by-label/CODE" ]]; then
+    rsync -a --delete ~/Code /code &> /dev/null
+fi
