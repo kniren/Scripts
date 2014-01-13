@@ -22,7 +22,6 @@ else
     DMENU="dmenu -i -p "
 fi
 
-EXIT=0
 
 if [[ $# -ne 0 ]]; then
     if [[ "$1" == "--control" ]]; then
@@ -33,7 +32,7 @@ Previous
 Stop
 Add
 '
-        while [ "$EXIT" -eq 0 ]
+        while true
         do
             PROMPT="MPD"
             SELECT=$(echo "$QUERY_TYPES" | $DMENU"$PROMPT" )
@@ -68,7 +67,7 @@ QUERY_TYPES='Artist
 Album
 Title'
 
-while [ "$EXIT" -eq 0 ]
+while true
 do
     PROMPT="Search Music"
     QUERY_TYPE=$(echo "$QUERY_TYPES" | $DMENU"$PROMPT" )
@@ -109,9 +108,9 @@ do
             mpc -q clear
             mpc -q findadd "$QUERY_TYPE" "$RESULTS"
             mpc -q play
-            EXIT=1
+            exit 0
         fi
     else
-        EXIT=1
+        exit 1
     fi
 done
