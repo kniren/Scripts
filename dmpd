@@ -6,7 +6,7 @@
 #     Author: Alex Sánchez <kniren@gmail.com>
 #
 # ------------------------------------------------------------------
-
+# TOSO:  Add support for  current playlist search
 # Check the existence of .dmenurc and sources it. This file contains the OPTIONS
 # variable, for example:
 #
