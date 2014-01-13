@@ -1,0 +1,117 @@
+#!/bin/bash
+# ------------------------------------------------------------------
+#
+#     Scripts/dmpd
+#     Description: Search your MPD library and control it through dmenu 
+#     Author: Alex Sánchez <kniren@gmail.com>
+#
+# ------------------------------------------------------------------
+
+# Check the existence of .dmenurc and sources it. This file contains the OPTIONS
+# variable, for example:
+#
+#   OPTIONS='-i -h 20 -fn profont-8 -sb #c90c25 -nb #000000'
+#
+# Call the script with '--control' to open the mpd control dmenu, where you can
+# play, pause, stop, go the next song, etc.
+
+if [[ -f $HOME/.dmenurc ]]; then
+    . $HOME/.dmenurc
+    DMENU="dmenu $OPTIONS -p "
+else
+    DMENU="dmenu -i -p "
+fi
+
+EXIT=0
+
+if [[ $# -ne 0 ]]; then
+    if [[ "$1" == "--control" ]]; then
+        QUERY_TYPES='Play
+Pause
+Next
+Previous
+Stop
+Add
+'
+        while [ "$EXIT" -eq 0 ]
+        do
+            PROMPT="MPD"
+            SELECT=$(echo "$QUERY_TYPES" | $DMENU"$PROMPT" )
+            case "$SELECT" in
+                "Play")
+                    mpc play
+                    ;;
+                "Pause")
+                    mpc pause
+                    ;;
+                "Next")
+                    mpc next
+                    ;;
+                "Previous")
+                    mpc prev
+                    ;;
+                "Stop")
+                    mpc stop
+                    ;;
+                "Add")
+                    break
+                    ;;
+                *)
+                    exit 1
+                    ;;
+            esac
+        done
+    fi
+fi
+
+QUERY_TYPES='Artist
+Album
+Title'
+
+while [ "$EXIT" -eq 0 ]
+do
+    PROMPT="Search Music"
+    QUERY_TYPE=$(echo "$QUERY_TYPES" | $DMENU"$PROMPT" )
+
+    ERR=$?
+    case "$QUERY_TYPE" in
+        "Artist" |"Album" | "Title")
+            ;;
+        *)
+            exit 1
+            ;;
+    esac
+
+    if [ $ERR -eq 0 ]; then
+        PROMPT=$QUERY_TYPE
+        RESULTS=$( mpc -q list "$QUERY_TYPE" | $DMENU"$PROMPT" )
+        ERR=$?
+        MATCH=$( mpc -q list "$QUERY_TYPE" | grep "$RESULTS")
+        if [[ -z "$MATCH" ]]; then
+            exit 1
+        fi
+        if [ $ERR -eq 0 ]; then
+            if [ $QUERY_TYPE = "Artist" ]; then
+                ALBUM=$( echo -e "/Play All\n$( mpc ls "$RESULTS" )" | awk -F "/" '{print $2;}' | $DMENU"$RESULTS" )
+                ERR=$?
+                if [ $ERR -eq 1 ]; then
+                    continue 
+                fi
+                if [ "$ALBUM" != "Play All"  ]; then
+                    MATCH=$( mpc ls "$RESULTS" | grep "$ALBUM")
+                    if [[ -z "$MATCH" ]]; then
+                        exit 1
+                    fi
+                    QUERY_TYPE="Album"
+                    RESULTS="$ALBUM"
+                fi
+            fi
+            mpc -q clear
+            mpc -q findadd "$QUERY_TYPE" "$RESULTS"
+            mpc -q play
+            EXIT=1
+        fi
+    else
+        EXIT=1
+    fi
+done
