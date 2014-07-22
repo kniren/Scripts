@@ -1,5 +1,0 @@
-#!/bin/bash
-maildirs="$HOME/.mail/gmail/Inbox/new"
-
-find $maildirs -type f | wc -l
-exit 0
